@@ -1,0 +1,8 @@
+{
+  "name": "lesshat-devstack",
+  "version": "1.0.0",
+  "dependencies": {
+    "less": "1.4.x",
+    "uglify-js": "~2.3.6"
+  }
+}
