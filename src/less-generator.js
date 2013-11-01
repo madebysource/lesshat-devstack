@@ -258,7 +258,10 @@ LESSGenerator.prototype.generateVendorResultInceptionJS_ = function(vendor, proc
   var appendCSS = '';
   var prependCSS = '';
 
-  if (this.vendors.indexOf(vendor) >= 0 && this.vendors[this.vendors.indexOf(vendor)] != 'w3c') {
+  if (LESSGenerator.prefixes[vendor] !== undefined) {
+    prefix = LESSGenerator.prefixes[vendor];
+  }
+  else {
     prefix = '-' + this.vendors[this.vendors.indexOf(vendor)] + '-';
   }
 
@@ -292,7 +295,7 @@ LESSGenerator.prototype.generateVendorResultInceptionJS_ = function(vendor, proc
     if (this.mixin.result[vendor]) {
       if (this.mixin.result[vendor].value) {
         result = '@' + process + vendor_;
-        result = this.mixin.result[vendor].value.replace(/{{\s*(\w+\s*\|?\s*\w+)\s*}}/, function() {
+        result = this.mixin.result[vendor].value.replace(/{{\s*(\w+\s*\|?\s*\w+)\s*}}/, function(match, sub) {
           if (sub == 'escape_result') {
             result = '@{' + result.slice(1) + '}';
           }
