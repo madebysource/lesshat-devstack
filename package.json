@@ -1,8 +1,33 @@
 {
   "name": "lesshat-devstack",
+  "description": "Dev stack for maintaining LESS Hat mixins library",
   "version": "1.0.0",
+  "homepage": "http://lesshat.com/",
+  "author": {
+    "name": "Petr Brzek",
+    "email": "petrbrzek@abdoc.net"
+  },
+  "contributors": [
+    {
+      "name": "Jan Kuca",
+      "url": "www.jankuca.com"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csshat/lesshat-devstack/"
+  },
+  "bugs": {
+    "url": "https://github.com/csshat/lesshat-devstack/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/csshat/lesshat-devstack/blob/master/LICENSE"
+    }
+  ],
   "dependencies": {
     "less": "1.4.x",
     "uglify-js": "~2.3.6"
-  }
+  },
 }
