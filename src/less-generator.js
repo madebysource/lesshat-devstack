@@ -1,16 +1,18 @@
 /**
- * Uglify require
+ * Requires
  */
 
 var UglifyJS = require('uglify-js');
+var fs = require('fs');
 
 /**
  * LESSGenerator
  */
 
-var LESSGenerator = function(mixin, mixin_key) {
+var LESSGenerator = function(mixin, mixin_key, desc) {
   this.mixin = mixin;
   this.mixin_key = mixin_key;
+  this.desc = desc;
 
   if (!this.mixin_key) {
     throw new Error('No mixin key specified');
@@ -198,8 +200,20 @@ LESSGenerator.prototype.generateBodies_ = function() {
 
 LESSGenerator.prototype.generateResults_ = function() {
   var chunks = [];
-  chunks.push(this.generateResultDefinitions_());
-  chunks.push(this.generateResultCalls_());
+  var custom_results = null;
+  var path = this.desc.path.replace(this.desc.key + '.js', '');
+
+  if (typeof this.mixin.result == 'string') {
+    if (!fs.existsSync(path + this.mixin.result)) {
+      throw Error(this.mixin.result + ' not found.');
+    }
+    custom_results = fs.readFileSync(path + this.mixin.result, 'utf8');
+    chunks.push(custom_results);
+  }
+  else {
+    chunks.push(this.generateResultDefinitions_());
+    chunks.push(this.generateResultCalls_());
+  }
 
   return chunks.join('\n\n');
 };

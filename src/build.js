@@ -70,7 +70,7 @@ mixin_descs.forEach(function(desc) {
       /**
        * LESS Generator
        */
-      var generator = new LESSGenerator(mixin, desc.key);
+      var generator = new LESSGenerator(mixin, desc.key, desc);
       chunks.push(generator.generate());
       break;
   }
