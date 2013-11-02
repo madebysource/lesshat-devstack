@@ -12,6 +12,7 @@ module.exports = function (grunt) {
     var doc_array = [];
     dirs.forEach(function (dir) {
       var mixin_path_noext = path_global.join(mixins_path, dir, dir);
+      console.log(mixin_path_noext, fs.existsSync(mixin_path_noext + '.md'));
       if (fs.existsSync(mixin_path_noext + '.md')) {
         doc_array.push(fs.readFileSync(mixin_path_noext + '.md', 'utf8'));
       }
