@@ -27,7 +27,7 @@ var chunks = [];
 var header_path = path.join(mixin_dirname, 'header.less');
 if (fs.existsSync(header_path)) {
   var header = fs.readFileSync(header_path, 'utf8');
-  chunks.push(header.trim());
+  header += '\n// TABLE OF MIXINS:\n';
 }
 
 /**
@@ -74,7 +74,14 @@ mixin_descs.forEach(function(desc) {
       chunks.push(generator.generate());
       break;
   }
+  header += '\t// ' + desc.key + '\n';
 });
+
+/**
+ * Add header as first
+ */
+
+chunks.unshift(header.trim());
 
 /**
  * Fotter of mixins
