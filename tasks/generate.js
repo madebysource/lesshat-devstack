@@ -1,10 +1,16 @@
+var fs = require('fs');
+var path_global = require('path');
+
 module.exports = function(grunt) {
   grunt.registerTask('generator', function() {
 
     grunt.task.requires('prompt');
 
     var config = grunt.config('generator.settings');
-    var path = path_global.join(__dirname, '/mixins/');
+    var path_global = require('path');
+    var fs = require('fs');
+    var parent_dirname = path_global.resolve(__dirname, '..', '..', '..');
+    var path = path_global.join(parent_dirname, '/mixins/');
 
     // Check whether mixins folder exists
     if (!fs.existsSync(path)) {
@@ -21,7 +27,7 @@ module.exports = function(grunt) {
     grunt.log.ok('Folder created – DONE');
 
     // Create files inside folder
-    var lesshatdev_path = path_global.resolve(__dirname, './node_modules/lesshat-dev/src/');
+    var lesshatdev_path = path_global.resolve(__dirname, '..', 'src');
 
     // Check whether mixin template exists
     if (fs.existsSync(lesshatdev_path + 'mixin-template.js')) {
