@@ -29,5 +29,5 @@
   "dependencies": {
     "less": "1.4.x",
     "uglify-js": "~2.3.6"
-  },
+  }
 }
