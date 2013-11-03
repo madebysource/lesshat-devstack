@@ -2,6 +2,8 @@ module.exports = function (grunt) {
   grunt.registerTask('iterate', function() {
     grunt.task.requires('prompt:version');
     var path_global = require('path');
+    var child_process = require('child_process');
+    var exec = child_process.exec;
     var version = grunt.config('version').settings.version;
     var parent_dirname = path_global.resolve(__dirname, '..', '..', '..');
 
@@ -34,8 +36,16 @@ module.exports = function (grunt) {
       grunt.fail.fatal(name + ' file not found');
     }
 
-    //jsonWrite(path_global.resolve(parent_dirname, 'package.json'));
-    //jsonWrite(path_global.resolve(parent_dirname, 'bower.json'));
+    jsonWrite(path_global.resolve(parent_dirname, 'package.json'));
+    jsonWrite(path_global.resolve(parent_dirname, 'bower.json'));
+
+    // git tag
+    var command = 'git tag -a v' + version + ' -m "Version %%%"'.replace('%%%', version);
+    exec(command, function(error, stdout, stderr){ 
+      if (error !== null) {
+        console.log('exec error: ' + error);
+      } 
+    });
 
   });
 };
