@@ -31,20 +31,6 @@ if (fs.existsSync(header_path)) {
 }
 
 /**
- * Version of mixins
- */
-
-if (process.argv[2] === 'prod') {
-  var version_path = path.join(mixin_dirname, 'VERSION');
-  if (fs.existsSync(version_path)) {
-    var version = parseFloat(fs.readFileSync(version_path, 'utf8'), 10);
-    version = (version + 0.1).toFixed(1);
-    chunks.push('// version: ' + version);
-    fs.writeFileSync(version_path, version, 'utf8');
-  }
-}
-
-/**
  * Global toggles
  */
 

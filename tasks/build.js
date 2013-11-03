@@ -12,13 +12,6 @@ module.exports = function (grunt) {
     var build_script_path = path.join(root_dirname, 'src', 'build.js');
     var build_result_path = path.join(parent_dirname, 'build', 'lesshat.less');
     var proc;
-
-    if (arguments.length === 0) { 
-      proc = exec('node ' + build_script_path + ' > ' + build_result_path);
-    }
-    else {
-      proc = exec('node ' + build_script_path  + ' prod' + ' > ' + build_result_path);
-    }
  
     proc.stderr.on('data', function (chunk) {
       process.stderr.write(chunk);
