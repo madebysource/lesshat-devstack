@@ -1,6 +1,7 @@
 module.exports = function (grunt) {
   grunt.registerTask('iterate', function() {
     grunt.task.requires('prompt:version');
+    var path_global = require('path');
     var version = grunt.config('version').settings.version;
     var parent_dirname = path_global.resolve(__dirname, '..', '..', '..');
 
