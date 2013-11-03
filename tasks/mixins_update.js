@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     var file = '';
     var parent_dirname = path_global.resolve(__dirname, '..', '..', '..');
     var mixins_dirname = path_global.resolve(parent_dirname, 'build', 'lesshat.less');
-    var version = grunt.config('pkg').version;
+    var version = grunt.file.readJSON(path_global.resolve(parent_dirname, 'package.json')).version;
     if (grunt.file.exists(mixins_dirname)) {
       file = grunt.file.read(mixins_dirname);
       file = file.replace(/{{\s*version\s*}}/, version + ' ' + '(' + grunt.template.today('yyyy-mm-dd') + ')');
