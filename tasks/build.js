@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     var proc;
 
     proc = exec('node ' + build_script_path + ' > ' + build_result_path);
- 
+
     proc.stderr.on('data', function (chunk) {
       process.stderr.write(chunk);
     });
@@ -24,6 +24,9 @@ module.exports = function (grunt) {
       console.log('> ' + build_result_path);
       done(true);
     });
+
+    grunt.task.run('mixins_update');
+    grunt.task.run('prefix');
   });
 
 };

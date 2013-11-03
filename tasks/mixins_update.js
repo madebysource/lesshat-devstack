@@ -11,6 +11,7 @@ module.exports = function (grunt) {
       file = file.replace(/{{\s*version\s*}}/, version + ' ' + '(' + grunt.template.today('yyyy-mm-dd') + ')');
       grunt.file.write(mixins_dirname, file);
       grunt.log.ok('lesshat.less version changed!');
+      grunt.log.ok('lesshat-prefixed.less version changed!');
       return;
     }
     grunt.fail.fatal('lesshat.less file not found');
