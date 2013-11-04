@@ -6,12 +6,12 @@
 3. Code!
 
 ## Grunt tasks
-1.	`grunt` – for production. It will prompt you for new version, update package.json, bower.json, header inside lesshat.less and also creates git tag. Then it builds mixins from mixins folders, test them and also it creates prefixed version. Finally it builds documentation. **Don't use it for contribution.**
-2.	`grunt contrib` – for contribution. It same like above, but doesn't prompt you for new version. **Use this for contribution**
+1.	`grunt` – for production. It will prompt you for new version, update package.json, bower.json, header inside lesshat.less and also create git tag. Then it builds mixins from mixins folders, test them and also it create prefixed version. Finally it builds documentation. **Don't use it for contribution.**
+2.	`grunt contrib` – for contribution. It's the same like the one above, but doesn't prompt you for new version. **Use this for contribution**
 3.	`grunt version` – changes version in package.json, bower.json and in lesshat.less and lesshat-prefixed.less files and it also creates git tag. **Don't use it for contribution.**
-4.	`grunt generate` – mixin generator. It creates folder, mixin file, test file and also doc file. Please use it for crating new mixins.
+4.	`grunt generate` – mixin generator. It creates folder, mixin file, test file and also doc file. Please use it for creating new mixins.
 5.	`grunt dev` – great for development. It just builds mixins and test them.
-6.	`grunt build` – awesome for developemnt. It just builds mixins.
+6.	`grunt build` – awesome for development. It just builds mixins.
 
 
 ## About mixins
@@ -21,7 +21,7 @@
 * The exported function is the argument processing function of the mixin. This function is, by default, used for all browsers.
 * LESS Hat Dev Stack automatically handles converting between dash-case and camelCase. So `borderRadius` will be `border-radius` in CSS result.
 * Always use camelCase in mixin source files!
-* **The best way to learn how to create your own mixins is to learn from existing ones.**
+* **The best way to learn how to create your own mixins is to learn from the existing ones.**
 
 
 ## Mixins API
@@ -60,15 +60,15 @@
 		borderRadius.alias = ['rounded', 'bor'];
 		
 * `<mixinName>.vendors = [<browser>, …]` **required!**
-	* In vendors array you specified for which browsers is this mixin supported.
-	* W3C is handled by default. Don't specified that.
+	* In vendors array you specify for which browsers is this mixin supported.
+	* W3C is handled by default. Don't specify that.
 	
 	**Example:**
 	
 		animation.vendors = ['webkit', 'moz', 'opera'];
 		
 * `<mixinName>.vendors.vendor = boolean`
-	* If you supports some sort of syntax, but you don't want it enabled by default, you can turn it off with this.
+	* If you support some sort of syntax, but you don't want it enable by default, you can turn it off with this.
 	
 	**Example:**
 	
@@ -103,7 +103,7 @@
 			},
 		}
 		
-	* In some extreme cases, where result is quite comlicated e.g. keyframes mixin, you need competely custom results. The result is completely up to you! It's not recommended, because it's not testable, but sometimes you have to be bad guy.
+	* In some extreme cases, where result is quite comlicated e.g. keyframes mixin, you need completely custom results. The result is completely up to you! It's not recommended, because it's not testable, but sometimes you have to be a bad guy.
 	
 		**Example:**
 		
