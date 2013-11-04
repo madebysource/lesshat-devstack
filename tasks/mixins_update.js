@@ -1,6 +1,5 @@
 module.exports = function (grunt) {
   grunt.registerTask('mixins_update', function() {
-    grunt.task.requires('version');
     var path_global = require('path');
     var file = '';
     var parent_dirname = path_global.resolve(__dirname, '..', '..', '..');
