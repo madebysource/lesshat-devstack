@@ -1,4 +1,4 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   grunt.registerTask('iterate', function() {
     grunt.task.requires('prompt:version');
     var path_global = require('path');
@@ -40,11 +40,18 @@ module.exports = function (grunt) {
     jsonWrite(path_global.resolve(parent_dirname, 'bower.json'));
 
     // git tag
-    var command = 'git tag -a v' + version + ' -m "Version %%%"'.replace('%%%', version);
-    exec(command, function(error, stdout, stderr){ 
+    var command_gitcommit = 'git add .; git commit -m "Version %%%"'.replace('%%%', version);
+    var command_gittag = 'git tag -a v' + version + ' -m "Version %%%"'.replace('%%%', version);
+    exec(command_gitcommit, function(error, stdout, stderr) {
       if (error !== null) {
         console.log('exec error: ' + error);
-      } 
+        return false;
+      }
+      exec(command_gittag, function(error, stdout, stderr) {
+        if (error !== null) {
+          console.log('exec error: ' + error);
+        }
+      });
     });
 
   });
