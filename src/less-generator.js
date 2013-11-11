@@ -209,8 +209,7 @@ LESSGenerator.prototype.generateResults_ = function() {
     }
     custom_results = fs.readFileSync(path + this.mixin.result, 'utf8');
     chunks.push(custom_results);
-  }
-  else {
+  } else {
     chunks.push(this.generateResultDefinitions_());
     chunks.push(this.generateResultCalls_());
   }
@@ -274,8 +273,7 @@ LESSGenerator.prototype.generateVendorResultInceptionJS_ = function(vendor, proc
 
   if (LESSGenerator.prefixes[vendor] !== undefined) {
     prefix = LESSGenerator.prefixes[vendor];
-  }
-  else {
+  } else {
     prefix = '-' + this.vendors[this.vendors.indexOf(vendor)] + '-';
   }
 
@@ -367,12 +365,12 @@ LESSGenerator.prototype.generateVendorResultInceptionJS_ = function(vendor, proc
   }
 
   return '.inception (@signal, @arguments)' +
-    ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and not (@' + process + vendor_ + ' = 08121991)' +
+    ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and (isstring(@' + process + vendor_ + ')) and not (iscolor(@' + process + vendor_ + ')) and not (isnumber(@' + process + vendor_ + ')) and not (iskeyword(@' + process + vendor_ + ')) and not (isurl(@' + process + vendor_ + ')) and not (ispixel(@' + process + vendor_ + ')) and not (ispercentage(@' + process + vendor_ + ')) and not (isem(@' + process + vendor_ + '))' +
     ' { ' +
     prependCSS + prefix + this.mixin_key + ': ' + result + appendCSS +
     ' }' +
     '\n\t\t.inception (@signal, @arguments)' +
-    ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and (@' + process + vendor_ + ' = 08121991)' +
+    ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and not (isstring(@' + process + vendor_ + ')) and not (iscolor(@' + process + vendor_ + ')) and not (isnumber(@' + process + vendor_ + ')) and not (iskeyword(@' + process + vendor_ + ')) and not (isurl(@' + process + vendor_ + ')) and not (ispixel(@' + process + vendor_ + ')) and not (ispercentage(@' + process + vendor_ + ')) and not (isem(@' + process + vendor_ + '))' +
     ' {} ';
 };
 

@@ -1,16 +1,17 @@
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   grunt.registerTask('documentation', function() {
     var path_global = require('path');
     var fs = require('fs');
     var parent_dirname = path_global.resolve(__dirname, '..', '..', '..');
     var mixins_path = path_global.join(parent_dirname, '/mixins/');
+    var version = grunt.file.readJSON(path_global.resolve(parent_dirname, 'package.json')).version;
     // Check whether mixins folder exists
     if (!fs.existsSync(mixins_path)) {
       grunt.fail.fatal('Mixins folder does not exist.');
     }
     var dirs = fs.readdirSync(mixins_path).sort();
     var doc_array = [];
-    dirs.forEach(function (dir) {
+    dirs.forEach(function(dir) {
       var mixin_path_noext = path_global.join(mixins_path, dir, dir);
       console.log(mixin_path_noext, fs.existsSync(mixin_path_noext + '.md'));
       if (fs.existsSync(mixin_path_noext + '.md')) {
@@ -20,13 +21,12 @@ module.exports = function (grunt) {
 
     if (fs.existsSync(path_global.join(parent_dirname, 'README-template.md'))) {
       var doc_template = fs.readFileSync(path_global.join(parent_dirname, 'README-template.md'), 'utf8');
-    }
-    else {
+    } else {
       grunt.fail.fatal('README-template.md does not exist.');
     }
-      
-    doc_template = doc_template.replace(/{{\s*documentation\s*}}$/gm, doc_array.join('\n'));
-    
+
+    doc_template = doc_template.replace(/{{\s*documentation\s*}}$/gm, doc_array.join('\n')).replace(/{{\s*version\s*}}/gm, version + ' ' + '(' + grunt.template.today('yyyy-mm-dd') + ')');
+
     fs.writeFileSync(path_global.join(parent_dirname, 'README.md'), doc_template);
 
     grunt.log.ok('Documentation generated – DONE');
