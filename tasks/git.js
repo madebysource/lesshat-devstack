@@ -3,6 +3,7 @@ module.exports = function(grunt) {
     var child_process = require('child_process');
     var exec = child_process.exec;
     var version = grunt.config('version').settings.version;
+    var done = this.async();
 
     // git tag
     var command_gitcommit = 'git add .; git commit -m "Version %%%"'.replace('%%%', version);
@@ -16,6 +17,7 @@ module.exports = function(grunt) {
         if (error !== null) {
           console.log('exec error: ' + error);
         }
+        done();
       });
     });
 
