@@ -13,7 +13,7 @@ module.exports = function (grunt) {
       grunt.fail.fatal('Mixin template does not exist.');
     }
     var mixins = fs.readFileSync(path + 'lesshat.less', 'utf8');
-    mixins = mixins.replace(/^\.([a-z0-9-]+\([a-z@., 0-9-]+)/gm, function (match, sub_1) { return '.lh-' + sub_1; });
+    mixins = mixins.replace(/^\.([a-z0-9-]+\([a-z@., 0-9-]+)/gmi, function (match, sub_1) { return '.lh-' + sub_1; });
     fs.writeFileSync(path + 'lesshat-prefixed.less', mixins);
 
     grunt.log.ok('Prefixed version – DONE');

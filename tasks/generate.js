@@ -4,8 +4,6 @@ var path_global = require('path');
 module.exports = function(grunt) {
   grunt.registerTask('generator', function() {
 
-    grunt.task.requires('prompt');
-
     var config = grunt.config('generator.settings');
     var path_global = require('path');
     var fs = require('fs');

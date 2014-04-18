@@ -29,6 +29,7 @@ var LESSGenerator = function(mixin, mixin_key, desc) {
    */
   this.vendors.push('w3c');
 
+  this.conditions = false;
   this.alias = this.mixin.alias;
   this.fns = this.getFunctionMap();
 };
@@ -76,7 +77,7 @@ LESSGenerator.generateGlobalToggles = function() {
 
   chunks.unshift('// Config supported browsers for your project');
 
-  return chunks.join('\n');
+  return chunks.join('');
 };
 
 /**
@@ -118,7 +119,6 @@ LESSGenerator.prototype.generate = function() {
 
     chunks.push(
       '.' + name + mixin_args,
-      that.generateLocalToggles_(),
       that.generateBodies_(),
       that.generateResults_(),
       '}'
@@ -139,7 +139,7 @@ LESSGenerator.prototype.generate = function() {
 
   }
 
-  return chunks.join('\n\n');
+  return chunks.join('\n');
 };
 
 /**
@@ -150,6 +150,8 @@ LESSGenerator.prototype.generateLocalToggles_ = function() {
   var chunks = [];
   var state = true;
   var self = this;
+
+  if (!this.conditions) return;
   this.vendors.forEach(function(vendor) {
     state = true;
     if (self.vendors[vendor] == false && typeof self.vendors[vendor] != 'undefined') {
@@ -158,7 +160,7 @@ LESSGenerator.prototype.generateLocalToggles_ = function() {
     chunks.push('  @' + vendor + '_local: ' + state + ';');
   });
 
-  return chunks.join('\n');
+  return chunks.join('');
 };
 
 /**
@@ -214,7 +216,7 @@ LESSGenerator.prototype.generateResults_ = function() {
     chunks.push(this.generateResultCalls_());
   }
 
-  return chunks.join('\n\n');
+  return chunks.join('');
 };
 
 /**
@@ -226,7 +228,7 @@ LESSGenerator.prototype.generateResultDefinitions_ = function() {
   chunks.push(this.generatePrimaryResultDefinition_());
   chunks.push(this.generateSecondaryResultDefinition_());
 
-  return chunks.join('\n');
+  return chunks.join('');
 };
 
 /**
@@ -238,24 +240,31 @@ LESSGenerator.prototype.generatePrimaryResultDefinition_ = function() {
   var fns = Object.keys(this.fns);
   var chunks = [];
 
-  // open .result() definition
-  chunks.push('  ' +
-    '.result (@arguments, @signal, @boolean, @local_boolean)' +
-    ' when (@boolean = true)' +
-    ' and (@local_boolean = true)' +
-    ' {'
-  );
+  if (this.conditions) {
+    // open .result() definition
+    chunks.push('  ' +
+      '.result (@arguments, @signal, @boolean, @local_boolean)' +
+      ' when (@boolean = true)' +
+      ' and (@local_boolean = true)' +
+      ' {'
+    );
 
-  for (var i = 0, l = prefixes.length; i < l; i++) {
-    chunks.push('    ' + this.generateVendorResultInceptionJS_(prefixes[i], fns[i]));
+    for (var i = 0, l = prefixes.length; i < l; i++) {
+      chunks.push('  ' + this.generateVendorResultInceptionJS_(prefixes[i], fns[i]));
+    }
+
+    chunks.push('    ' +
+      '.inception(@signal, @arguments);'
+    );
+
+    // close .result() definition
+    chunks.push('  }');
+  } else {
+    for (var i = 0, l = prefixes.length; i < l; i++) {
+      chunks.push('  ' + this.generateVendorResultInceptionJS_(prefixes[i], fns[i]));
+    }
+
   }
-
-  chunks.push('    ' +
-    '.inception(@signal, @arguments);'
-  );
-
-  // close .result() definition
-  chunks.push('  }');
 
   return chunks.join('\n');
 };
@@ -364,14 +373,19 @@ LESSGenerator.prototype.generateVendorResultInceptionJS_ = function(vendor, proc
     }
   }
 
-  return '.inception (@signal, @arguments)' +
-    ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and (isstring(@' + process + vendor_ + ')) and not (iscolor(@' + process + vendor_ + ')) and not (isnumber(@' + process + vendor_ + ')) and not (iskeyword(@' + process + vendor_ + ')) and not (isurl(@' + process + vendor_ + ')) and not (ispixel(@' + process + vendor_ + ')) and not (ispercentage(@' + process + vendor_ + ')) and not (isem(@' + process + vendor_ + '))' +
-    ' { ' +
-    prependCSS + prefix + this.mixin_key + ': ' + result + appendCSS +
-    ' }' +
-    '\n\t\t.inception (@signal, @arguments)' +
-    ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and not (isstring(@' + process + vendor_ + ')) and not (iscolor(@' + process + vendor_ + ')) and not (isnumber(@' + process + vendor_ + ')) and not (iskeyword(@' + process + vendor_ + ')) and not (isurl(@' + process + vendor_ + ')) and not (ispixel(@' + process + vendor_ + ')) and not (ispercentage(@' + process + vendor_ + ')) and not (isem(@' + process + vendor_ + '))' +
-    ' {} ';
+  if (this.conditions) {
+    return '.inception (@signal, @arguments)' +
+      ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and (isstring(@' + process + vendor_ + ')) and not (iscolor(@' + process + vendor_ + ')) and not (isnumber(@' + process + vendor_ + ')) and not (iskeyword(@' + process + vendor_ + ')) and not (isurl(@' + process + vendor_ + ')) and not (ispixel(@' + process + vendor_ + ')) and not (ispercentage(@' + process + vendor_ + ')) and not (isem(@' + process + vendor_ + '))' +
+      ' { ' +
+      prependCSS + prefix + this.mixin_key + ': ' + result + appendCSS +
+      ' }' +
+      '\n\t\t.inception (@signal, @arguments)' +
+      ' when (@signal = ' + (this.vendors.indexOf(vendor) + 1) + ') ' + 'and not (isstring(@' + process + vendor_ + ')) and not (iscolor(@' + process + vendor_ + ')) and not (isnumber(@' + process + vendor_ + ')) and not (iskeyword(@' + process + vendor_ + ')) and not (isurl(@' + process + vendor_ + ')) and not (ispixel(@' + process + vendor_ + ')) and not (ispercentage(@' + process + vendor_ + ')) and not (isem(@' + process + vendor_ + '))' +
+      ' {} ';
+  } else {
+    return prependCSS + prefix + this.mixin_key + ': ' + result + appendCSS;
+  }
+
 };
 
 /**
@@ -381,6 +395,7 @@ LESSGenerator.prototype.generateVendorResultInceptionJS_ = function(vendor, proc
 LESSGenerator.prototype.generateSecondaryResultDefinition_ = function() {
   var chunks = [];
 
+  if(!this.conditions) return;
   chunks.push('  ' +
     '.result (@arguments, @signal, @boolean, @local_boolean)' +
     ' when not (@boolean = true), not (@local_boolean = true)' +
@@ -399,6 +414,7 @@ LESSGenerator.prototype.generateResultCalls_ = function() {
   var prefixes = this.vendors;
   var chunks = [];
 
+  if(!this.conditions) return;
   for (var i = 0, l = prefixes.length; i < l; i++) {
     var vendor = '@' + prefixes[i];
     if (typeof LESSGenerator.prefixes[prefixes[i]] == 'undefined') {
@@ -407,28 +423,26 @@ LESSGenerator.prototype.generateResultCalls_ = function() {
     chunks.push('  .result(@arguments, ' + (this.vendors.indexOf(prefixes[i]) + 1) + ', ' + vendor + ', @' + prefixes[i] + '_local);');
   }
 
-  return chunks.join('\n');
+  return chunks.join('');
 };
 
 /**
  * LESS uglify part
  */
 
-LESSGenerator.uglify_options = {};
+LESSGenerator.uglify_options = {
+  dead_code: true
+};
 
 LESSGenerator.uglifyFunction = function(js) {
   js = js.toString();
   js = '(' + js + ')()';
 
-  var ast = UglifyJS.parse(js);
-  var compressor = UglifyJS.Compressor(LESSGenerator.uglify_options);
-
-  ast.figure_out_scope();
-  ast = ast.transform(compressor);
-
-  var result = ast.print_to_string();
-  result = result.replace(/^!/, '').replace(/\(\);$/, '');
-  return result;
+  var result = UglifyJS.minify(js, {
+    fromString: true,
+    mangle: true,
+  });
+  return result.code.replace(/^!/, '').replace(/\(\);$/, '');
 };
 
 

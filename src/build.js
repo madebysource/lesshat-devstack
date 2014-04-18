@@ -31,12 +31,6 @@ if (fs.existsSync(header_path)) {
 }
 
 /**
- * Global toggles
- */
-
-chunks.push(LESSGenerator.generateGlobalToggles());
-
-/**
  * Mixin Loader
  */
 

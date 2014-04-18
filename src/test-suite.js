@@ -28,9 +28,9 @@ Object.defineProperties(TestSuite.prototype, {
         });
       });
 
-      this.prefixes = result_content.match(/@(?!w3c)[a-z0-9]+_local/g);
+      this.prefixes = result_content.match(/@process_(?!w3c)[a-z0-9]+/g);
       this.prefixes = this.prefixes.map(function(value) {
-        return value.replace('@', '').replace('_local', '');
+        return value.replace('@process_', '');
       });
       this.build_result_contents_ += result_content + '\n';
       this.setMixinKeys(this.mixin_keys_.concat(mixin_keys));
